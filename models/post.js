@@ -9,7 +9,7 @@ const PostSchema = new mongoose.Schema({
       maxDepth: 1,
     },
   },
-  title: {type: String, default: ""},
+  title: { type: String, default: "" },
   description: { type: String, default: "" },
   likes: [
     {
@@ -25,14 +25,14 @@ const PostSchema = new mongoose.Schema({
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Comment",
       autopopulate: {
-        maxDepth: 1
+        maxDepth: 1,
+      },
     },
-  },
   ],
   postedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 PostSchema.plugin(require("mongoose-autopopulate"));

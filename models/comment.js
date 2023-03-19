@@ -9,7 +9,7 @@ const CommentSchema = new mongoose.Schema({
       maxDepth: 1,
     },
   },
-  content: String
+  content: String,
 });
 
 CommentSchema.plugin(require("mongoose-autopopulate"));

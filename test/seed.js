@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
 const CommentModel = require("../models/comment");
 const PostModel = require("../models/post");
-const {app} = require('./../server');
+const { app } = require("./../server");
 const bcrypt = require("bcrypt");
 
 const userOneID = new ObjectID();
@@ -14,7 +14,6 @@ async function hashPassword(password) {
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
 }
-
 
 const posts = [
   {
@@ -34,11 +33,11 @@ const posts = [
 const users = [
   {
     _id: userOneID,
-    name:"person 1",
+    name: "person 1",
     email: "person1@gmail.com",
     password: "",
     username: "person1",
-    posts:[posts[0]._id]
+    posts: [posts[0]._id],
   },
   {
     _id: userTwoID,
@@ -46,15 +45,16 @@ const users = [
     email: "person2@gmail.com",
     password: "",
     username: "person2",
-    posts:[posts[1]._id]
+    posts: [posts[1]._id],
   },
 ];
 
-hashPassword("Password1").then((pass)=>{
-      users[0].password = pass;
-      users[1].password = pass;
-  }).catch()
-
+hashPassword("Password1")
+  .then((pass) => {
+    users[0].password = pass;
+    users[1].password = pass;
+  })
+  .catch();
 
 var addDummyPosts = (done) => {
   PostModel.deleteMany({})
@@ -65,7 +65,6 @@ var addDummyPosts = (done) => {
 };
 
 var addDummyUsers = (done) => {
-
   UserModel.deleteMany({})
     .then(() => {
       var userOne = new UserModel(users[0]).save();
