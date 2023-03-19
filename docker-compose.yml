@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  # MongoDB services
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2717:27017 
+    volumes:
+      - mongo_db:/data/db
+
+  #Node api service
+  api:
+    build: .
+    ports:
+      - 8000:8000
+    environment:
+      PORT: 8000
+      MONGODB_URI: mongodb://mongo_db:27017/
+      DB_NAME: reunion
+      JWT_SECRET: reuniontaskassignment
+      NAME: YASHVORA
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {} 

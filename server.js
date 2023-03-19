@@ -31,7 +31,7 @@ app.use("/api", userRouter);
 app.use("/api", postRouter);
 
 //Listen Port
-const port = process.env.PORT|| 8001
+const port = process.env.PORT
 app.listen(port, () => {
   console.log("Server is listening on port", `${port}`);
 });
