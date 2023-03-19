@@ -10,6 +10,8 @@ router.post("/posts", fetchuser, async (req, res) => {
   const user = await UserModel.findById(req.user.id);
   const post = await new PostModel({ user: req.user.id, ...req.body });
 
+  if(!user) return res.status(404).send("user not found");
+
   user.posts.push(post);
 
   user.save();
@@ -17,6 +19,7 @@ router.post("/posts", fetchuser, async (req, res) => {
 
   res.json({
     post_id: post._id,
+    title: post.title,
     description: post.description,
     created_time: post.postedAt,
   });

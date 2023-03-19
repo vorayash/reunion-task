@@ -40,26 +40,3 @@ PostSchema.plugin(require("mongoose-autopopulate"));
 const PostModel = mongoose.model("Post", PostSchema);
 
 module.exports = PostModel;
-
-/*
-const Chalk = require("chalk");
-
-module.exports = class Post {
-  constructor(user, photo, description = "", location = "", likes = [], comments = [], id) {
-    this.username = user.username;
-    this.name = user.name;
-    this.photo = photo;
-    this.description = description;
-    this.location = location;
-    this.likes = likes;
-    this.comments = comments;
-    this.id = id;
-  }
-  report() {
-    console.log(Chalk.blue.bgRed.bold(this.username), "share a post", Chalk.green(this.location), "and this description ", this.description);
-  }
-  static create({ user, photo, description, location, likes, comments, id }) {
-    return new Post(user, photo, description, location, likes, comments, id);
-  }
-}
-*/

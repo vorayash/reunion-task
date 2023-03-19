@@ -3,54 +3,37 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = "reuniontaskassignment";
 const fetchuser = require("../middleware/fetchuser");
 const mongoose = require('mongoose')
+const { ObjectID } = require('mongodb');
 
 const UserModel = require("../models/user");
 
+router.post("/register", async(req, res) => {
 
-router.post("/register", (req, res) => {
-
-  const { username, email, password, password2 } = req.body;
-  let errors = [];
-
-  if (!username || !email || !password || !password2) {
-    errors.push({ msg: "Please enter all fields" });
-  }
-
-  if (password != password2) {
-    errors.push({ msg: "Passwords do not match" });
-  }
-
-  if (password.length < 6) {
-    errors.json({ msg: "Password must be at least 6 characters" });
-  }
-
-  if (errors.length > 0) {
-    res.json("error", {
-      errors,
-      username,
-      email,
-      password,
-      password2,
-    });
-  } else {
-    UserModel.findOne({ email: email }).then((user) => {
+  
+  
+  let user = await UserModel.findOne({ email: req.body.email }).then((user) => {
       if (user) {
-        errors.push({ msg: "Email already exists" });
-        res.status(200).json({"register":{ errors, username, email, password }});
-      } else {
-        const newUser = new UserModel({
-          username,
-          email,
-          password,
-        });
-
-        newUser.save();
+        return res.json({ msg: "Email already exists" });
       }
     });
-  }
+
+    const{username, name, email} = req.body;
+      
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(req.body.password, salt);
+        
+        const newUser = new UserModel({
+          username,
+          name,
+          email,
+          password: secPass,
+        });
+
+        await newUser.save();
+
+        res.send("User registered!");  
 });
 
 
@@ -79,7 +62,6 @@ router.post('/authenticate', [
       if (!passwordCompare) {
           success = false;
           return res.status(400).json({ success, error: "Please login with correct credentials" })
-
       }
 
       const data = {
@@ -87,7 +69,7 @@ router.post('/authenticate', [
               id: user.id
           }
       }
-      const authtoken = jwt.sign(data, JWT_SECRET);
+      const authtoken = jwt.sign(data, process.env.JWT_SECRET);
       success = true;
       // res.json(user);
       res.json(authtoken);
@@ -170,6 +152,8 @@ router.get("/user", fetchuser, async (req, res) => {
     }
 
     const user = await UserModel.findById(req.user.id);
+
+    if(!user) return res.status(404).send("user not found");
 
     res.json({"name": user.name, "followers":user.followers.length, "followings": user.follows.length});
   } catch (error) {

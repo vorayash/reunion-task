@@ -4,7 +4,7 @@
   "description": "instagram-backend",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha test/**/*.test.js"
   },
   "keywords": [
     "backend"
@@ -28,7 +28,11 @@
     "validator": "^13.5.2"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
     "dotenv": "^10.0.0",
-    "nodemon": "^1.19.4"
+    "expect": "^29.5.0",
+    "mocha": "^10.2.0",
+    "nodemon": "^1.19.4",
+    "supertest": "^6.3.3"
   }
 }
