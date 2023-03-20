@@ -51,7 +51,7 @@ Follow these steps to install the application:
 
 - execute command `export PORT=8080`
 
-- execute `npm test` to execute mocha tests
+- execute `npm test` to execute mocha tests (Execute more than two times)
 
 - Press `ctr+C` to exit test cases
 
